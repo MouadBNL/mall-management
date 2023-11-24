@@ -2,14 +2,140 @@
 import AradeiLogo from '../../assets/AradeiLogo.png'
 import TheBaseLayoutSidebarNavItem from './TheBaseLayoutSidebarNavItem.vue';
 import HomeIcon from '../icons/HomeIcon.vue'
-import { ref } from 'vue';
+import { RendererElement, RendererNode, VNode, h, ref } from 'vue';
+import ContentIcon from '../icons/ContentIcon.vue';
+import UserIcon from '../icons/UserIcon.vue';
+import PermissionIcon from '../icons/PermissionIcon.vue';
+import RecieptIcon from '../icons/RecieptIcon.vue';
+import MessageIcon from '../icons/MessageIcon.vue';
+import CameraIcon from '../icons/CameraIcon.vue';
+import WifiIcon from '../icons/WifiIcon.vue';
 
+const r = HomeIcon
+
+interface NavItem {
+    label: string,
+    active: boolean,
+    icon? : any,
+    children?: NavItem[]
+}
+
+const navigation = ref<NavItem[]>([
+    {
+        label: 'Aradei',
+        active: true,
+        icon: HomeIcon,
+        children: [
+            {
+                label: 'Malls',
+                active: true
+            },
+            {
+                label: 'Brands',
+                active: false
+            },
+            {
+                label: 'Units',
+                active: false
+            },
+            {
+                label: 'Tenants',
+                active: false
+            },
+        ]
+    },
+    {
+        label: 'Content',
+        active: false,
+        icon: ContentIcon,
+        children: [
+            {
+                label: 'Events',
+                active: false
+            },
+            {
+                label: 'News',
+                active: false
+            },
+            {
+                label: 'Surveys',
+                active: false
+            },
+            {
+                label: 'Promos',
+                active: false
+            }
+        ]
+    },
+    {
+        label: 'App users',
+        active: false,
+        icon: UserIcon
+    }, {
+        label: 'Permission',
+        active: false,
+        icon: PermissionIcon,
+        children: [
+            {
+                label: 'Users',
+                active: false,
+            },
+            {
+                label: 'Roles',
+                active: false
+            }
+        ]
+    },
+    {
+        label: 'Reciepts',
+        active: false,
+        icon: RecieptIcon,
+        children: [
+            {
+                label: 'Validated',
+                active: false
+            },
+            {
+                label: 'Pending',
+                active: false
+            },
+            {
+                label: 'Rejected',
+                active: false
+            }
+        ]
+    },
+    {
+        label: 'Spport',
+        active: false,
+        icon: MessageIcon
+    },
+    {
+        label: 'Foot fall',
+        active: false,
+        icon: CameraIcon
+    },
+    {
+        label: 'Wifi Hotspot',
+        active: false,
+        icon: WifiIcon
+    }
+])
 // Todo create structure for navigation to be stored in array
 const active = ref("Aradei.Malls")
 
-const isActive = (label: string, level: 1 | 2) => {
-    // Todo fix active navigation
-    return active.value.split('.')[level - 1] == label
+const setActive = (parentIdx: number, childIdx?: number) => {
+    navigation.value.forEach((_, idx) => {
+        navigation.value[idx].active = false;
+        if(navigation.value[idx].children){
+            navigation.value[idx].children?.forEach((_, idx2) => {
+                navigation.value[idx].children[idx2].active = false
+            })
+        }
+    })
+
+    navigation.value[parentIdx].active = true
+    navigation.value[parentIdx].children[childIdx ?? 0].active = true
 }
 </script>
 
@@ -19,26 +145,15 @@ const isActive = (label: string, level: 1 | 2) => {
             <img :src="AradeiLogo" alt="logo" class="block">
         </div>
         <div class="grid grid-cols-1 gap-y-4">
-            <TheBaseLayoutSidebarNavItem label="Aradei" :active="isActive('Aradei', 1)" @click="active = 'Aradei'">
+            <TheBaseLayoutSidebarNavItem
+                v-for="(nav, idx) in navigation" :label="nav.label" :active="nav.active" @click="() => setActive(idx)">
                 <template #icon>
-                    <HomeIcon/>
+                    <component :is="nav.icon"/>
                 </template>
-                <template #items>
-                    <TheBaseLayoutSidebarNavItem label="Malls" :active="isActive('Malls', 2)"  @click="active = 'Aradei.Malls'"/>
-                    <TheBaseLayoutSidebarNavItem label="Brands" :active="isActive('Brands', 2)"  @click="active = 'Aradei.Brands'"/>
-                    <TheBaseLayoutSidebarNavItem label="Units" :active="isActive('Units', 2)"  @click="active = 'Aradei.Units'"/>
-                    <TheBaseLayoutSidebarNavItem label="Tenants" :active="isActive('Tenants', 2)"  @click="active = 'Aradei.Tenants'"/>
-                </template>
-            </TheBaseLayoutSidebarNavItem>
-            <TheBaseLayoutSidebarNavItem label="Content" :active="isActive('Content', 1)" @click="active = 'Content'">
-                <template #icon>
-                    <HomeIcon/>
-                </template>
-                <template #items>
-                    <TheBaseLayoutSidebarNavItem label="Events" :active="isActive('Events', 2)"  @click="active = 'Content.Events'"/>
-                    <TheBaseLayoutSidebarNavItem label="News" :active="isActive('News', 2)"  @click="active = 'Content.News'"/>
-                    <TheBaseLayoutSidebarNavItem label="Survey" :active="isActive('Survey', 2)"  @click="active = 'Content.Survey'"/>
-                    <TheBaseLayoutSidebarNavItem label="Promos" :active="isActive('Promos', 2)"  @click="active = 'Content.Promos'"/>
+                <template v-if="nav.children" #items>
+                    <TheBaseLayoutSidebarNavItem 
+                        v-for="(item, idx2) in nav.children" :label="item.label" :active="item.active" @click="() => setActive(idx, idx2)">
+                    </TheBaseLayoutSidebarNavItem>
                 </template>
             </TheBaseLayoutSidebarNavItem>
         </div>

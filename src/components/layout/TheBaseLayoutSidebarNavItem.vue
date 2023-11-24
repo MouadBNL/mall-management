@@ -40,7 +40,7 @@ const hasItems = computed(() => {
     
         </div>
         <div v-if="hasItems && active" class="relative mt-2 text-sm">
-            <div class="absolute top-6 bottom-6 left-[31px] w-[1px] bg-primary">
+            <div class="absolute top-4 bottom-4 left-[31px] w-[1px] bg-primary">
 
             </div>
             <div class="grid grid-cols-1 gap-y-2 flex-1 ml-[51px]">
