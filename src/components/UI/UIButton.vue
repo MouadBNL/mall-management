@@ -38,7 +38,7 @@ const classes = computed(() => {
 </script>
 
 <template>
-    <button class="flex items-center gap-4 px-4 py-2 rounded shadow font-medium" :class="classes">
+    <button class="flex items-center gap-4 p-3 rounded-lg shadow font-medium" :class="classes">
         <slot name="icon"/>
         <slot/>
     </button>
