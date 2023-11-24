@@ -4,7 +4,7 @@ import UIButton from "../../components/UI/UIButton.vue";
 import DeleteIcon from "../../components/icons/DeleteIcon.vue";
 import ViewIcon from "../../components/icons/ViewIcon.vue";
 import EditIcon from "../../components/icons/EditIcon.vue";
-import { computed, ref, watch } from 'vue';
+import { computed, ref, unref, watch } from 'vue';
 import { Filters, Mall, mallsData } from '../../data/malls';
 import UIModal from "../../components/UI/UIModal.vue";
 
@@ -37,7 +37,28 @@ const paginatedData = computed(() => {
 
 const data = ref(mallsData);
 const showViewModal = ref(false)
+const showEditModal = ref(false)
 const selectedMall = ref<Mall>()
+const selectedIndex = ref<number>()
+
+const editMall = (idx: number) => {
+    selectedIndex.value = idx
+    selectedMall.value = {
+        address: unref(data.value[idx].address),
+        city: unref(data.value[idx].city),
+        description: unref(data.value[idx].description),
+        name: unref(data.value[idx].name),
+    }
+    showEditModal.value = true
+}
+const saveEdits = () => {
+    if(selectedIndex.value != undefined && selectedMall.value !=undefined){
+        data.value[selectedIndex.value] = selectedMall.value
+    }
+    showEditModal.value = false
+    selectedIndex.value = undefined
+    selectedMall.value = undefined
+}
 
 const viewMall = (idx: number) => {
     selectedMall.value = data.value[idx]
@@ -52,11 +73,11 @@ const deleteMall = (idx: number) => {
 </script>
 
 <template>
-    <UIModal v-model:show="showViewModal">
+    <UIModal v-model:show="showViewModal" @close="selectedMall = undefined">
         <div class="w-1/2 p-12 bg-white rounded shadow" @click="(e) => e.stopPropagation()" v-if="selectedMall">
             <div class="grid grid-cols-1 gap-y-8">
                 <div>
-                    <label class="text-lg text-gray-500">Name:</label>
+                    <label class="text-lg text-gray-500">Name :</label>
                     <p class="text-xl font-bold">{{ selectedMall.name }}</p>
                 </div>
                 <div>
@@ -64,8 +85,37 @@ const deleteMall = (idx: number) => {
                     <p class="text-xl font-bold">{{ selectedMall.city }}</p>
                 </div>
                 <div>
-                    <label class="text-lg text-gray-500">Description:</label>
+                    <label class="text-lg text-gray-500">Address :</label>
+                    <p class="text-xl font-bold">{{ selectedMall.address }}</p>
+                </div>
+                <div>
+                    <label class="text-lg text-gray-500">Description :</label>
                     <p class="text-xl font-bold">{{ selectedMall.description }}</p>
+                </div>
+            </div>
+        </div>
+    </UIModal>
+    <UIModal v-model:show="showEditModal" @close="() => {selectedMall = undefined; selectedIndex = undefined} ">
+        <div class="w-1/2 p-12 bg-white rounded shadow" @click="(e) => e.stopPropagation()" v-if="selectedMall">
+            <div class="grid grid-cols-1 gap-y-8">
+                <div>
+                    <label class="text-lg text-gray-500 block mb-2">Name:</label>
+                    <input class="block bg-gray-50 border border-gray-300 px-4 py-2 w-full rounded" v-model="selectedMall.name" />
+                </div>
+                <div>
+                    <label class="text-lg text-gray-500 block mb-2">City:</label>
+                    <input class="block bg-gray-50 border border-gray-300 px-4 py-2 w-full rounded" v-model="selectedMall.city" />
+                </div>
+                <div>
+                    <label class="text-lg text-gray-500 block mb-2">Address:</label>
+                    <input class="block bg-gray-50 border border-gray-300 px-4 py-2 w-full rounded" v-model="selectedMall.address" />
+                </div>
+                <div>
+                    <label class="text-lg text-gray-500 block mb-2">Description:</label>
+                    <input class="block bg-gray-50 border border-gray-300 px-4 py-2 w-full rounded" v-model="selectedMall.description" />
+                </div>
+                <div class="flex justify-end mt-4">
+                    <UIButton @click="saveEdits">Save</UIButton>
                 </div>
             </div>
         </div>
@@ -107,7 +157,7 @@ const deleteMall = (idx: number) => {
                         <UIButton type="secondary" color="primary" @click="() => viewMall(index)">
                             <ViewIcon/>
                         </UIButton>
-                        <UIButton type="secondary" color="warning">
+                        <UIButton type="secondary" color="warning" @click="() => editMall(index)">
                             <EditIcon/>
                         </UIButton>
                         <UIButton type="secondary" color="danger" @click="() => deleteMall(index)">
