@@ -2,7 +2,7 @@
 import AradeiLogo from '../../assets/AradeiLogo.png'
 import TheBaseLayoutSidebarNavItem from './TheBaseLayoutSidebarNavItem.vue';
 import HomeIcon from '../icons/HomeIcon.vue'
-import { RendererElement, RendererNode, VNode, h, ref } from 'vue';
+import { RendererElement, RendererNode, VNode, h, markRaw, ref } from 'vue';
 import ContentIcon from '../icons/ContentIcon.vue';
 import UserIcon from '../icons/UserIcon.vue';
 import PermissionIcon from '../icons/PermissionIcon.vue';
@@ -11,7 +11,7 @@ import MessageIcon from '../icons/MessageIcon.vue';
 import CameraIcon from '../icons/CameraIcon.vue';
 import WifiIcon from '../icons/WifiIcon.vue';
 
-const r = HomeIcon
+const r = markRaw(HomeIcon)
 
 interface NavItem {
     label: string,
@@ -24,7 +24,7 @@ const navigation = ref<NavItem[]>([
     {
         label: 'Aradei',
         active: true,
-        icon: HomeIcon,
+        icon: markRaw(HomeIcon),
         children: [
             {
                 label: 'Malls',
@@ -47,7 +47,7 @@ const navigation = ref<NavItem[]>([
     {
         label: 'Content',
         active: false,
-        icon: ContentIcon,
+        icon: markRaw(ContentIcon),
         children: [
             {
                 label: 'Events',
@@ -70,11 +70,11 @@ const navigation = ref<NavItem[]>([
     {
         label: 'App users',
         active: false,
-        icon: UserIcon
+        icon: markRaw(UserIcon)
     }, {
         label: 'Permission',
         active: false,
-        icon: PermissionIcon,
+        icon: markRaw(PermissionIcon),
         children: [
             {
                 label: 'Users',
@@ -89,7 +89,7 @@ const navigation = ref<NavItem[]>([
     {
         label: 'Reciepts',
         active: false,
-        icon: RecieptIcon,
+        icon: markRaw(RecieptIcon),
         children: [
             {
                 label: 'Validated',
@@ -108,17 +108,17 @@ const navigation = ref<NavItem[]>([
     {
         label: 'Spport',
         active: false,
-        icon: MessageIcon
+        icon: markRaw(MessageIcon)
     },
     {
         label: 'Foot fall',
         active: false,
-        icon: CameraIcon
+        icon: markRaw(CameraIcon)
     },
     {
         label: 'Wifi Hotspot',
         active: false,
-        icon: WifiIcon
+        icon: markRaw(WifiIcon)
     }
 ])
 // Todo create structure for navigation to be stored in array
@@ -129,13 +129,13 @@ const setActive = (parentIdx: number, childIdx?: number) => {
         navigation.value[idx].active = false;
         if(navigation.value[idx].children){
             navigation.value[idx].children?.forEach((_, idx2) => {
-                navigation.value[idx].children[idx2].active = false
+                (navigation.value[idx] as any).children[idx2].active = false
             })
         }
     })
 
-    navigation.value[parentIdx].active = true
-    navigation.value[parentIdx].children[childIdx ? childIdx : 0].active = true
+    navigation.value[parentIdx].active = true;
+    (navigation.value[parentIdx] as any).children[childIdx ? childIdx : 0].active = true;
 }
 </script>
 

@@ -10,7 +10,7 @@
             </svg>
         </div>
         <div class="flex gap-2 items-center bg-primary/0 hover:bg-primary/10 transition-all px-4 py-1 rounded cursor-pointer">
-            <img src="#" alt="user" class="block h-11 aspect-square rounded-full bg-gray-100"/>
+            <img src="https://images.pexels.com/photos/13484361/pexels-photo-13484361.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="user" class="object-cover block h-11 aspect-square rounded-full bg-gray-100"/>
             <div>
                 <span class="font-bold block -mb-2">Manal Rachidi</span>
                 <span class="text-sm font-normal block text-gray-500">Manager</span>
