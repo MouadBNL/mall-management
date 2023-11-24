@@ -5,7 +5,8 @@ import DeleteIcon from "../../components/icons/DeleteIcon.vue";
 import ViewIcon from "../../components/icons/ViewIcon.vue";
 import EditIcon from "../../components/icons/EditIcon.vue";
 import { computed, ref, watch } from 'vue';
-import { Filters, mallsData } from '../../data/malls';
+import { Filters, Mall, mallsData } from '../../data/malls';
+import UIModal from "../../components/UI/UIModal.vue";
 
 const props = defineProps<{
     filters?: Filters
@@ -35,6 +36,13 @@ const paginatedData = computed(() => {
 
 
 const data = ref(mallsData);
+const showViewModal = ref(false)
+const selectedMall = ref<Mall>()
+
+const viewMall = (idx: number) => {
+    selectedMall.value = data.value[idx]
+    showViewModal.value = true
+}
 
 const deleteMall = (idx: number) => {
     if(confirm("Are you sure you want to delete a mall ?")) {
@@ -44,6 +52,24 @@ const deleteMall = (idx: number) => {
 </script>
 
 <template>
+    <UIModal v-model:show="showViewModal">
+        <div class="w-1/2 p-12 bg-white rounded shadow" @click="(e) => e.stopPropagation()" v-if="selectedMall">
+            <div class="grid grid-cols-1 gap-y-8">
+                <div>
+                    <label class="text-lg text-gray-500">Name:</label>
+                    <p class="text-xl font-bold">{{ selectedMall.name }}</p>
+                </div>
+                <div>
+                    <label class="text-lg text-gray-500">City:</label>
+                    <p class="text-xl font-bold">{{ selectedMall.city }}</p>
+                </div>
+                <div>
+                    <label class="text-lg text-gray-500">Description:</label>
+                    <p class="text-xl font-bold">{{ selectedMall.description }}</p>
+                </div>
+            </div>
+        </div>
+    </UIModal>
     <table class="mb-6">
         <thead>
             <tr class="border-b border-gray-300">
@@ -80,7 +106,7 @@ const deleteMall = (idx: number) => {
                 <td  class="py-5 px-2">
                     <!-- Define actions here, e.g., buttons for edit and delete -->
                     <div class="flex gap-4">
-                        <UIButton type="secondary" color="primary">
+                        <UIButton type="secondary" color="primary" @click="() => viewMall(index)">
                             <ViewIcon/>
                         </UIButton>
                         <UIButton type="secondary" color="warning">
