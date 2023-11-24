@@ -1,7 +1,20 @@
-// In your Vue component or data file
+export interface Mall {
+  name: string;
+  address: string;
+  city: string;
+  description: string;
+}
 
+export interface Filters {
+  name: string|null,
+  address: string|null,
+  city: string|null
+}
+
+/**
+ * Data generated using ChatGPT
+ */
 export const mallsData = [
-    // Malls 1-10
     {
       name: 'Mall of Morocco',
       address: '123 Avenue Hassan II, Casablanca',
@@ -62,7 +75,6 @@ export const mallsData = [
       city: 'Ouarzazate',
       description: 'Ouarzazate Oasis Mall is a key shopping destination in this historic city.',
     },
-    // Malls 11-20
     {
       name: 'Casablanca Fashion Square',
       address: '543 Boulevard Zerktouni, Casablanca',
@@ -123,7 +135,6 @@ export const mallsData = [
       city: 'Berrechid',
       description: 'Berrechid Business Park is a modern mall catering to the business community.',
     },
-    // Malls 21-30
     {
       name: 'Beni Mellal MegaMall',
       address: '543 Avenue Abdelkrim El Khattabi, Beni Mellal',
