@@ -35,10 +35,15 @@ const paginatedData = computed(() => {
 
 
 const data = ref(mallsData);
+
+const deleteMall = (idx: number) => {
+    if(confirm("Are you sure you want to delete a mall ?")) {
+        data.value.splice(idx, 1)
+    }
+}
 </script>
 
 <template>
-    <div class="p-4 bg-gray-200"><pre>{{ props.filters }}</pre></div>
     <table class="mb-6">
         <thead>
             <tr class="border-b border-gray-300">
@@ -81,7 +86,7 @@ const data = ref(mallsData);
                         <UIButton type="secondary" color="warning">
                             <EditIcon/>
                         </UIButton>
-                        <UIButton type="secondary" color="danger">
+                        <UIButton type="secondary" color="danger" @click="() => deleteMall(index)">
                             <DeleteIcon/>
                         </UIButton>
                     </div>

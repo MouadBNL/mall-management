@@ -45,7 +45,4 @@ onMounted(() => {
             </UIButton>
         </div>
     </div>
-    <div>
-        <pre>{{ filters }}</pre>
-    </div>
 </template>
