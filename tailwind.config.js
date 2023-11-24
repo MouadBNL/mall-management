@@ -2,10 +2,19 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: {
+          'DEFAULT': '#3B849C'
+        },
+        border: {
+          'DEFAULT': '#E3E6EB'
+        }
+      }
+    },
   },
   plugins: [],
 }

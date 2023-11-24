@@ -1,9 +1,12 @@
 <script setup lang="ts">
-
+import TheBaseLayout from './components/layout/TheBaseLayout.vue'
+import MallsPage from './pages/MallsPage.vue'
 </script>
 
 <template>
-	<h1>Aikyo: PFE 2024</h1>
+	<TheBaseLayout>
+		<MallsPage/>
+	</TheBaseLayout>
 </template>
 
 <style scoped>
