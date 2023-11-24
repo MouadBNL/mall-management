@@ -92,9 +92,7 @@ const deleteMall = (idx: number) => {
             <tr v-for="(item, index) in paginatedData" :key="index" class="border-b border-gray-200">
                 <td  class="py-5 px-2">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 aspect-square block bg-gray-300 rounded-full">
-
-                        </div>
+                        <img src="https://static.medias24.com/content/uploads/2019/11/MallRabat.jpg?x71515" class="w-12 aspect-square block bg-gray-300 rounded-full"/>
                         <span class="text-base font-bold">
                             {{ item.name }}
                         </span>
