@@ -5,6 +5,7 @@ const props = defineProps<{
   label: string;
   active?: boolean;
 }>();
+const emits = defineEmits<{(e: 'itemClick'):void}>()
 
 const slots = useSlots();
 
@@ -19,7 +20,8 @@ const hasItems = computed(() => {
             :class="{
                 'bg-primary text-white hover:bg-primary/10 hover:text-primary': props.active,
                 'hover:bg-primary hover:text-white bg-primary/0 text-[#9AA8B8]': !props.active
-            }">
+            }"
+            @click="() => emits('itemClick')">
             <div class="flex gap-4 items-center">
                 <slot name="icon"/>
     

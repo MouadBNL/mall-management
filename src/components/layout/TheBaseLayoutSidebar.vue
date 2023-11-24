@@ -135,7 +135,7 @@ const setActive = (parentIdx: number, childIdx?: number) => {
     })
 
     navigation.value[parentIdx].active = true
-    navigation.value[parentIdx].children[childIdx ?? 0].active = true
+    navigation.value[parentIdx].children[childIdx ? childIdx : 0].active = true
 }
 </script>
 
@@ -146,13 +146,13 @@ const setActive = (parentIdx: number, childIdx?: number) => {
         </div>
         <div class="grid grid-cols-1 gap-y-4">
             <TheBaseLayoutSidebarNavItem
-                v-for="(nav, idx) in navigation" :label="nav.label" :active="nav.active" @click="() => setActive(idx)">
+                v-for="(nav, idx) in navigation" :label="nav.label" :active="nav.active" @itemClick="() => setActive(idx)">
                 <template #icon>
                     <component :is="nav.icon"/>
                 </template>
                 <template v-if="nav.children" #items>
                     <TheBaseLayoutSidebarNavItem 
-                        v-for="(item, idx2) in nav.children" :label="item.label" :active="item.active" @click="() => setActive(idx, idx2)">
+                        v-for="(item, idx2) in nav.children" :label="item.label" :active="item.active" @itemClick="() => setActive(idx, idx2)">
                     </TheBaseLayoutSidebarNavItem>
                 </template>
             </TheBaseLayoutSidebarNavItem>
